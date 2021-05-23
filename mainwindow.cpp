@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include <iostream>
 
+#include "command_list.h"
+
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -28,12 +30,25 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 {
     switch (event->key()) {
     case Qt::Key_W:
-        std::cerr << "button presed " << 'w' << std :: endl;
-        std::cerr << socket.writeDatagram("hello world", 5, QHostAddress("192.168.31.255"), port)<< std ::endl;
+    {
+        uint8_t data[2 + sizeof(struct set_throttle)];
+        struct set_throttle* data_ptr = reinterpret_cast<struct set_throttle*> (data + 2);
+        data_ptr->value = 0.5;
+        std::cerr << socket.writeDatagram(
+                         reinterpret_cast<char *>(data),
+                         sizeof (data),
+                         QHostAddress("192.168.31.255"), port)<< std ::endl;
+    }
         break;
     case Qt::Key_S:
     {
-        std::cerr << "button presed " << 's' << std :: endl;
+        uint8_t data[2 + sizeof(struct set_throttle)];
+        struct set_throttle* data_ptr = reinterpret_cast<struct set_throttle*> (data + 2);
+        data_ptr->value = 0.0;
+        std::cerr << socket.writeDatagram(
+                         reinterpret_cast<char *>(data),
+                         sizeof (data),
+                         QHostAddress("192.168.31.255"), port)<< std ::endl;
     }
         break;
     case Qt::Key_A:
