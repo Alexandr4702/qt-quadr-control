@@ -10,10 +10,10 @@
 
 #include <stdint.h>
 
-//struct command {
-//    uint16_t comman_id;
-//    void* data;
-//}__attribute__((packed));
+struct command {
+    uint16_t command_id;
+    void* data;
+}__attribute__((packed));
 
 enum command_list
 {
@@ -34,8 +34,5 @@ struct set_orientation
 	float roll;
 	float yaw;
 }__attribute__((packed));
-
-
-
 
 #endif /* MAIN_COMMAND_LIST_H_ */
